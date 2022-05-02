@@ -22,11 +22,7 @@ class NotaController extends Controller
 
     public function store(NotasRequest $request)
     {
-        $promedio = ($request->nota1 +
-                $request->nota2 +
-                $request->nota3) / 3;
-
-        $round = round($promedio, 2);
+        $round = $this->getpromedio($request);
 
         Nota::create([
             'estudiante' => $request->estudiante,
@@ -39,9 +35,42 @@ class NotaController extends Controller
         return view('registro_notas', compact('round'));
     }
 
+    public function edit($id)
+    {
+        $nota = Nota::find($id);
+        return view('actualizar_nota', compact('nota'));
+    }
+
+    public function update(NotasRequest $request, $id)
+    {
+        $nota = Nota::find($id);
+
+        $round = $this->getpromedio($request);
+
+        $nota->update([
+            'estudiante' => $request->estudiante,
+            'nota1' => $request->nota1,
+            'nota2' => $request->nota2,
+            'nota3' => $request->nota3,
+            'promedio' => $round
+        ]);
+
+        return redirect('/');
+    }
+
     public function destroy($id)
     {
         Nota::destroy($id);
         return redirect('/');
     }
+
+    public function getpromedio(NotasRequest $request): float
+    {
+        $promedio = ($request->nota1 +
+                $request->nota2 +
+                $request->nota3) / 3;
+
+        return round($promedio, 2);
+    }
+
 }

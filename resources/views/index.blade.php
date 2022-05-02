@@ -28,15 +28,16 @@
                 <td>{{ $nota->nota3 }}</td>
                 <td>{{ $nota->promedio }}</td>
                 <td>
-                    <form action="{{ url('eliminar',$nota->id) }}" method="POST">
+                    <a href="{{url('notas/'.$nota->id.'/editar')}}" class="btn btn-sm btn-warning">Editar</a>
+                    <form style="display: inline-block" action="{{ url('eliminar',$nota->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button onclick="return confirm('Esta seguro de eliminar el registro?')" type="submit" class="btn btn-danger">Eliminar</button>
+                        <button onclick="return confirm('Esta seguro de eliminar el registro?')" type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                     </form>
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
-    Are you sure
+
 @endsection
